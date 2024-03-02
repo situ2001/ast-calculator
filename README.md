@@ -32,6 +32,8 @@ Welcome to the AST calculator! Just type in an expression and press enter.
 
 The calculator can also be run on the web because it can be compiled to WebAssembly.
 
+![Web Calculator](./web-calculator.png)
+
 To run it, you should compile it to WASM first and then start the web app in folder `app`. Make sure you have `wasm-pack` and `pnpm` installed.
 
 ```shell
