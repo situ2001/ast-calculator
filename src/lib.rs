@@ -8,7 +8,7 @@ use wasm_bindgen::prelude::*;
 
 #[cfg(target_arch = "wasm32")]
 #[wasm_bindgen]
-pub fn eval_expr(s: &str) -> f64 {
+pub fn evalExpression(s: &str) -> f64 {
     let lexer = lexer::Lexer::new(s.to_string());
     let mut parser = parser::Parser::new(lexer);
     let expr = parser.parse();
