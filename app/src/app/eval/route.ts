@@ -1,4 +1,4 @@
-import { eval_expr } from "ast-calculator";
+import { evalExpression } from "ast-calculator";
 
 export const dynamic = 'force-dynamic' // defaults to auto
 export async function GET(request: Request) {
@@ -11,7 +11,7 @@ export async function GET(request: Request) {
 
   let result;
   try {
-    result = eval_expr(param).toString();
+    result = evalExpression(param).toString();
     console.log('Expr received:', param, 'Result:', result);
     return new Response(result, { status: 200 });
   } catch (e) {

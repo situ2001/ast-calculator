@@ -1,15 +1,13 @@
 "use client";
 
-import Image from "next/image";
-import styles from "./page.module.css";
 import { useRef, useState } from "react";
 
 export default function Home() {
-  let evalFn = useRef<Promise<(s: string) => number>>(
+  let evalExpressionFunction = useRef<Promise<(s: string) => number>>(
     new Promise((resolve, reject) => {
       import("ast-calculator")
         .then((module) => {
-          resolve(module.eval_expr);
+          resolve(module.evalExpression);
         })
         .catch(reject);
     })
@@ -22,15 +20,13 @@ export default function Home() {
   let [apiResultTime, setApiResultTime] = useState<number>(0);
 
   return (
-    <main className={styles.main}>
+    <main>
       <form
         action="/eval"
         method="GET"
         onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
           e.preventDefault();
-
           let expr = e.currentTarget.querySelector("input")!.value;
-
           if (!expr) {
             setResult("Please provide an expression");
             setApiResult("Please provide an expression");
@@ -38,7 +34,7 @@ export default function Home() {
           }
 
           let start = Date.now();
-          evalFn.current.then((f) => {
+          evalExpressionFunction.current.then((f) => {
             try {
               let result = f(expr);
               console.log("Result: ", result);
@@ -50,7 +46,6 @@ export default function Home() {
               setResult("Error");
             }
           });
-
           fetch(`/eval?expr=${encodeURIComponent(expr)}`).then((res) => {
             res.text().then((text) => {
               let end = Date.now();
@@ -60,22 +55,17 @@ export default function Home() {
           });
         }}
       >
-        <input
-          type="text"
-          name="expr"
-          placeholder="Enter an expression"
-          className={styles.input}
-        />
-        <button className={styles.button}>Execute</button>
+        <input type="text" name="expr" placeholder="Enter an expression" />
+        <button>Execute</button>
       </form>
       <div>
-        <h1>Local Result ({resultTime} ms)</h1>
-        <h2>{result}</h2>
+        <span>Local Result ({resultTime} ms): </span>
+        <span>{result}</span>
       </div>
 
       <div>
-        <h1>HTTP Result ({apiResultTime} ms)</h1>
-        <h2>{apiResult}</h2>
+        <span>HTTP Result ({apiResultTime} ms): </span>
+        <span>{apiResult}</span>
       </div>
     </main>
   );
