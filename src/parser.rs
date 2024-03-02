@@ -19,6 +19,9 @@ impl Parser {
         let token_current = lexer.next_token();
         let token_next = lexer.next_token();
 
+        assert_ne!(token_current.token_type(), TokenType::Illegal);
+        assert_ne!(token_next.token_type(), TokenType::Illegal);
+
         Parser {
             lexer,
             token_current,
@@ -65,6 +68,7 @@ impl Parser {
         self.token_current = self.token_next.clone();
         self.token_next = self.lexer.next_token();
         assert_ne!(self.token_current.token_type(), TokenType::Illegal);
+        assert_ne!(self.token_next.token_type(), TokenType::Illegal);
     }
 
     fn parse_integer_literal(&mut self) -> Box<dyn Expression> {
